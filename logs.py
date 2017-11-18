@@ -3,6 +3,7 @@
 import psycopg2
 from datetime import datetime
 
+#establish connection to database
 def connect(query):
     database = psycopg2.connect(database="news")
     c = database.cursor()
@@ -14,6 +15,7 @@ def connect(query):
 def print_results(query_results):
     # Iterate over the rows and get our results
     for i in query_results:
+        #convert second half to string for concatination
         print(i[0] + ' - ' + str(i[1]))
     print '\n'
 
