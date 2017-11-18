@@ -39,7 +39,6 @@ def print_popular_authors():
     print("-------------------------")
     print("The Most Popular Authors")
     print("-------------------------")
-    #
     query2 = """
             select name, page_views as views
             from popular_authors join authors
