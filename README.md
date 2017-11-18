@@ -18,7 +18,8 @@ This database includes three tables:
 
 In order to successfully answer these questions, five views were created.
 
-Popular_articles joins the article and logs tables, matching the path within the log table to the slug within the articles table. In order to do so, we need to concatenate /article/ to each slug in order to match the path.
+### popular_articles
+This view uses the article and logs tables, matching the path within the log table to the slug within the articles table. In order to do so, we need to concatenate /article/ to each slug in order to match the path.
 ```sql
 Create view popular_articles as
 select title, count(*) as page_views
@@ -28,8 +29,10 @@ group by articles.title
 order by page_views desc;
 ```
 
+### popular_authors
+This view uses the authors and logs tables in the same way as the popular articles, matching the path within the log table to the slug within the articles table. In order to do so, we need to concatenate /article/ to each slug in order to match the path.
 ```sql
-Create view top_authors as
+Create view popular_authors as
 select author, count(*) as page_views
 from articles join log
 on log.path = concat('/article/', articles.slug)
@@ -37,6 +40,8 @@ group by articles.author
 order by page_views desc;
 ```
 
+### total_requests
+This view uses the log table to determine the total number of requests on the site.
 ```sql
 create view total_requests as
 select date(time), count(*) as requests
@@ -45,6 +50,8 @@ group by date
 order by date desc;
 ```
 
+### failed_requests
+This view uses the log table to find all failed requests on the site by looking for the 404 status.
 ```sql
 create view failed_requests
 as select date(time), count(*) as requests
@@ -53,6 +60,8 @@ group by date
 order by date desc;
 ```
 
+### daily_errors
+This view uses the two previous views to divide failed requests by total requests, giving us a percentage of errors. It uses casting to convert both numbers to decimals, and multiplies them by 100, rounding them to 2 decimal places. It then checks to see if any of those totals are greater than 1%, in order to answer question 3.
 ```sql
 create view daily_errors
 as select failed_requests.date, round((failed_requests.requests::decimal/total_requests.requests::decimal * 100), 2) as error_percentage
