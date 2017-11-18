@@ -9,8 +9,20 @@ This is a project created for the Udacity Full Stack Web Developer Course. The i
 
 Note that this project uses Python3, and a Vagrant remote environment. The database we are working with can be found <a href="https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip">here</a>.
 
-## Instructions
 This database includes three tables:
 * Articles, which includes information about the authors, including a title, slug, and author ID.
 * Authors, which includes the name, bio, and employee ID number for each reporter.
-* Logs, which includes an entry for each attempted access of an article on the site, including the time, and whether the attempt was successful. 
+* Logs, which includes an entry for each attempted access of an article on the site, including the time, and whether the attempt was successful.
+
+## Instructions
+
+In order to successfully answer these questions, four views were created.
+
+'''
+Create view popular_articles as
+select title, count(*) as page_views
+from articles join log
+on log.path = concat('/article/', articles.slug)
+group by articles.title
+order by page_views desc;
+'''
