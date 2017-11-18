@@ -13,22 +13,25 @@ def connect(query):
     return query_results
 
 def print_results(query_results):
-    # Iterate over the rows and get our results
+    #loop through rows to get results
     for i in query_results:
         #convert second half to string for concatination
         print(i[0] + ' - ' + str(i[1]))
     print '\n'
 
+#Question 1: What are the most popular three articles of all time?
 def print_popular_articles():
     print("-------------------------")
     print("The Most Popular Articles")
     print("-------------------------")
+    #query selec
     query1 = """
             select title, page_views as views from popular_articles limit 3;
             """
     popular_articles = connect(query1)
     print_results(popular_articles)
 
+#Question 2: Who are the most popular article authors of all time?
 def print_popular_authors():
     print("-------------------------")
     print("The Most Popular Authors")
@@ -41,6 +44,7 @@ def print_popular_authors():
     popular_authors = connect(query2)
     print_results(popular_authors)
 
+#Question 3: On which days did more than 1% of requests lead to errors?
 def print_error():
     print("-------------------------")
     print("Request Errors Above 1%")
@@ -53,9 +57,11 @@ def print_error():
             """
     error_request = connect(query3)
     for i in error_request:
+        #Take date in current format and make it easier to read via .strftime
         print(i[0].strftime('%B %d, %Y') + ' - ' + i[1])
         print '\n'
 
+#Run all three functions when python file is executed
 if __name__ == "__main__":
     print_popular_articles()
     print_popular_authors()
