@@ -60,3 +60,5 @@ where total_requests.date = failed_requests.date
 and ((failed_requests.requests::decimal/total_requests.requests::decimal * 100) > 1.0)
 order by failed_requests.date;
 ```
+
+After these views are created, run logs.py.
