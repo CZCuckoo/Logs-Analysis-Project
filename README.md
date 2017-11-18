@@ -16,13 +16,47 @@ This database includes three tables:
 
 ## Instructions
 
-In order to successfully answer these questions, four views were created.
+In order to successfully answer these questions, five views were created.
 
-```
+```sql
 Create view popular_articles as
 select title, count(*) as page_views
 from articles join log
 on log.path = concat('/article/', articles.slug)
 group by articles.title
 order by page_views desc;
+```
+
+```sql
+Create view top_authors as
+select author, count(*) as page_views
+from articles join log
+on log.path = concat('/article/', articles.slug)
+group by articles.author
+order by page_views desc;
+```
+
+```sql
+create view total_requests as
+select date(time), count(*) as requests
+from log
+group by date
+order by date desc;
+```
+
+```sql
+create view failed_requests
+as select date(time), count(*) as requests
+from log where status = '404 NOT FOUND'
+group by date
+order by date desc;
+```
+
+```sql
+create view daily_errors
+as select failed_requests.date, round((failed_requests.requests::decimal/total_requests.requests::decimal * 100), 2) as error_percentage
+from failed_requests, total_requests
+where total_requests.date = failed_requests.date
+and ((failed_requests.requests::decimal/total_requests.requests::decimal * 100) > 1.0)
+order by failed_requests.date;
 ```
