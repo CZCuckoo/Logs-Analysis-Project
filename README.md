@@ -18,11 +18,11 @@ This database includes three tables:
 
 In order to successfully answer these questions, four views were created.
 
-'''
+```
 Create view popular_articles as
 select title, count(*) as page_views
 from articles join log
 on log.path = concat('/article/', articles.slug)
 group by articles.title
 order by page_views desc;
-'''
+```
