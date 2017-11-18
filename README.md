@@ -7,7 +7,7 @@ This is a project created for the Udacity Full Stack Web Developer Course. The i
 * <strong>Who are the most popular article authors of all time?</strong>
 * <strong>On which days did more than 1% of requests lead to errors?</strong>
 
-Note that this project uses Python3, and a Vagrant remote environment. The database we are working with can be found <a href="https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip">here</a>.
+Note that this project used Python3, and a Vagrant remote environment. The database we are working with can be found <a href="https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip">here</a>.
 
 This database includes three tables:
 * Articles, which includes information about the authors, including a title, slug, and author ID.
@@ -18,6 +18,7 @@ This database includes three tables:
 
 In order to successfully answer these questions, five views were created.
 
+Popular_articles joins the article and logs tables, matching the path within the log table to the slug within the articles table. In order to do so, we need to concatenate /article/ to each slug in order to match the path.
 ```sql
 Create view popular_articles as
 select title, count(*) as page_views
@@ -61,4 +62,4 @@ and ((failed_requests.requests::decimal/total_requests.requests::decimal * 100) 
 order by failed_requests.date;
 ```
 
-After these views are created, run logs.py.
+After these views are created, run logs.py. The output should look the same as is found in the output.txt file.
